@@ -1,5 +1,7 @@
 import { tema } from '../config/tema';
-import type { Item, ItemFormulario } from '../types/Item';
+import type { Item, ItemFormulario, NovaVisita, Visita } from '../types/Item';
+
+
 // Lista de itens guardada na memória do navegador (some ao recarregar a página)
 let itens: Item[] = tema.exemplos.map((exemplo, posicao) => ({
  id: String(posicao + 1),
@@ -38,11 +40,51 @@ export async function atualizar(
  if (!atual) {
  throw new Error('Item não encontrado');
  }
- const atualizado: Item = { id, ...dados };
+ const atualizado: Item = { id, visitas: atual.visitas, ...dados };
  itens = itens.map((i) => (i.id === id ? atualizado : i));
  return atualizado;
 }
 export async function excluir(id: string): Promise<void> {
  await esperar(300);
  itens = itens.filter((i) => i.id !== id);
+}
+
+// adicao de funcoes adicionais 
+
+export async function adicionarVisita(
+  itemId: string,
+  dadosVisita: NovaVisita,
+): Promise<Item> {
+  await esperar(300);
+  const item = itens.find((i) => i.id === itemId);
+  if (!item) {
+    throw new Error('Item não encontrado');
+  }
+  const novaVisita: Visita = {
+    id: String(Date.now()),
+    ...dadosVisita,
+  };
+  const atualizado: Item = {
+    ...item,
+    visitas: [novaVisita, ...(item.visitas ?? [])],
+  };
+  itens = itens.map((i) => (i.id === itemId ? atualizado : i));
+  return atualizado;
+}
+
+export async function excluirVisita(
+  itemId: string,
+  visitaId: string,
+): Promise<Item> {
+  await esperar(300);
+  const item = itens.find((i) => i.id === itemId);
+  if (!item) {
+    throw new Error('Item não encontrado');
+  }
+  const atualizado: Item = {
+    ...item,
+    visitas: (item.visitas ?? []).filter((v) => v.id !== visitaId),
+  };
+  itens = itens.map((i) => (i.id === itemId ? atualizado : i));
+  return atualizado;
 }
