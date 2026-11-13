@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import StatusBadge from '../components/StatusBadge';
-import { tema } from '../config/tema';
 import {
   adicionarVisita,
   buscarPorId,
@@ -12,6 +12,7 @@ import type { Item } from '../types/Item';
 import { formatarMoeda } from '../utils/formatar';
 
 export default function DetalhesPage() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [item, setItem] = useState<Item | null>(null);
   const [carregando, setCarregando] = useState(true);
@@ -64,14 +65,14 @@ export default function DetalhesPage() {
   }
 
   if (carregando) {
-    return <p className="mensagem-info">Carregando...</p>;
+    return <p className="mensagem-info">{t('carregando')}</p>;
   }
 
   if (erro || !item) {
     return (
       <section>
         <p className="mensagem-erro">{erro}</p>
-        <Link to="/">Voltar para a lista</Link>
+        <Link to="/">{t('voltarParaLista')}</Link>
       </section>
     );
   }
@@ -82,42 +83,42 @@ export default function DetalhesPage() {
     <section>
       <h1>{item.nome}</h1>
       <dl className="detalhes">
-        <dt>{tema.labelCategoria}</dt>
+        <dt>{t('colunaEspecie')}</dt>
         <dd>{item.categoria}</dd>
-        <dt>{tema.labelValor}</dt>
+        <dt>{t('colunaValor')}</dt>
         <dd>{formatarMoeda(item.valor)}</dd>
-        <dt>Situação</dt>
+        <dt>{t('colunaSituacao')}</dt>
         <dd>
           <StatusBadge status={item.status} />
         </dd>
-        <dt>{tema.labelDescricao}</dt>
+        <dt>{t('campoDescricao')}</dt>
         <dd>{item.descricao || '—'}</dd>
       </dl>
 
       <div className="formulario-botoes">
         <Link to={`/editar/${item.id}`} className="botao">
-          Editar
+          {t('editar')}
         </Link>
         <Link to="/" className="botao botao-secundario">
-          Voltar
+          {t('voltar')}
         </Link>
       </div>
 
       <hr style={{ margin: '32px 0', borderColor: 'var(--cor-borda)' }} />
 
-      <h2>Histórico de Visitas</h2>
+      <h2>{t('historicoVisitas')}</h2>
 
       {visitas.length === 0 ? (
-        <p className="mensagem-info">Nenhuma visita registrada para este pet.</p>
+        <p className="mensagem-info">{t('nenhumaVisita')}</p>
       ) : (
         <table className="tabela" style={{ marginBottom: '24px' }}>
           <thead>
             <tr>
-              <th>Data</th>
-              <th>Motivo / Procedimento</th>
-              <th>Veterinário(a)</th>
-              <th>Laudo</th>
-              <th>Ações</th>
+              <th>{t('colunaData')}</th>
+              <th>{t('colunaMotivo')}</th>
+              <th>{t('colunaVeterinario')}</th>
+              <th>{t('colunaLaudo')}</th>
+              <th>{t('colunaAcoes')}</th>
             </tr>
           </thead>
           <tbody>
@@ -132,7 +133,7 @@ export default function DetalhesPage() {
                     className="botao-link perigo"
                     onClick={() => handleExcluirVisita(visita.id)}
                   >
-                    Excluir
+                    {t('excluir')}
                   </button>
                 </td>
               </tr>
@@ -141,10 +142,10 @@ export default function DetalhesPage() {
         </table>
       )}
 
-      <h3>Registrar Visita Anterior</h3>
+      <h3>{t('registrarVisita')}</h3>
       <form className="formulario" onSubmit={handleAdicionarVisita}>
         <label>
-          Data da visita
+          {t('colunaData')}
           <input
             type="date"
             value={data}
@@ -153,7 +154,7 @@ export default function DetalhesPage() {
           />
         </label>
         <label>
-          Motivo / Procedimento
+          {t('colunaMotivo')}
           <input
             type="text"
             placeholder="Ex: Vacina V10, Consulta de rotina..."
@@ -163,7 +164,7 @@ export default function DetalhesPage() {
           />
         </label>
         <label>
-          Veterinário(a)
+          {t('colunaVeterinario')}
           <input
             type="text"
             placeholder="Ex: Dra. Ana"
@@ -173,7 +174,7 @@ export default function DetalhesPage() {
           />
         </label>
         <label>
-          Laudo
+          {t('colunaLaudo')}
           <input
             type="text"
             placeholder="Ex: Animal saudável, vacinado..."
@@ -184,7 +185,7 @@ export default function DetalhesPage() {
         </label>
         <div className="formulario-botoes">
           <button type="submit" className="botao">
-            Adicionar Visita
+            {t('adicionarVisita')}
           </button>
         </div>
       </form>
