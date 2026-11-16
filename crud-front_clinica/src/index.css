@@ -159,3 +159,67 @@ h1 {
 .mensagem-info {
  color: #6b7280;
 }
+
+/* ---------- Cards de Estatísticas ---------- */
+.cards-estatisticas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.card-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  background: #f9fafb;
+  border: 1px solid var(--cor-borda);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.card-icone {
+  font-size: 28px;
+}
+
+.card-item h3 {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-valor {
+  margin: 4px 0 0 0;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--cor-texto);
+}
+
+/* ---------- Barra de Filtros ---------- */
+.barra-filtros {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.barra-filtros .campo-busca {
+  flex: 2;
+  min-width: 220px;
+  margin-bottom: 0;
+}
+
+.filtro-select {
+  flex: 1;
+  min-width: 160px;
+  padding: 10px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 6px;
+  font-size: 15px;
+  background-color: #ffffff;
+  color: var(--cor-texto);
+}
