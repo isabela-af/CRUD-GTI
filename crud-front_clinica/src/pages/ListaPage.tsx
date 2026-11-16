@@ -53,7 +53,12 @@ export default function ListaPage() {
   const faturamentoTotal = itens.reduce((soma, item) => soma + (Number(item.valor) || 0), 0);
 
 
-    const itensFiltrados = itens.filter((item) => {
+  // Lista de espécies disponíveis (inclui espécies personalizadas cadastradas)
+  const listaEspecies = Array.from(
+    new Set([...tema.categorias, ...itens.map((i) => i.categoria)]),
+  );
+
+  const itensFiltrados = itens.filter((item) => {
     // 1. Checa o nome
     const atendeNome = item.nome.toLowerCase().includes(busca.toLowerCase());
     
@@ -122,7 +127,7 @@ export default function ListaPage() {
           onChange={(evento) => setFiltroEspecie(evento.target.value)}
         >
           <option value="">Todas as espécies</option>
-          {tema.categorias.map((cat) => (
+          {listaEspecies.map((cat) => (
             <option key={cat} value={cat}>
               {cat}
             </option>

@@ -23,6 +23,7 @@ export default function FormularioPage() {
  const navigate = useNavigate();
  const editando = Boolean(id);
  const [dados, setDados] = useState<DadosDoFormulario>(formularioVazio);
+ const [outraCategoria, setOutraCategoria] = useState('');
  const [carregando, setCarregando] = useState(false);
  const [salvando, setSalvando] = useState(false);
  const [erro, setErro] = useState('');
@@ -31,13 +32,15 @@ export default function FormularioPage() {
  try {
  setCarregando(true);
  const item = await buscarPorId(idDoItem);
+ const ehCategoriaPadrao = tema.categorias.includes(item.categoria);
  setDados({
  nome: item.nome,
- categoria: item.categoria,
+ categoria: ehCategoriaPadrao ? item.categoria : 'Outros',
  valor: String(item.valor),
  status: item.status,
  descricao: item.descricao,
  });
+ setOutraCategoria(ehCategoriaPadrao ? '' : item.categoria);
  } catch {
  setErro('Não foi possível carregar o registro.');
  } finally {
@@ -49,6 +52,7 @@ export default function FormularioPage() {
  carregarItem(id);
  } else {
  setDados(formularioVazio);
+ setOutraCategoria('');
  }
  }, [id]);
  function handleChange(
@@ -70,9 +74,15 @@ export default function FormularioPage() {
  setErro(`Informe um valor válido em "${tema.labelValor}".`);
  return;
  }
+ if (dados.categoria === 'Outros' && outraCategoria.trim() === '') {
+ setErro('Por favor, informe o nome da espécie.');
+ return;
+ }
+ const categoriaFinal =
+ dados.categoria === 'Outros' ? outraCategoria.trim() : dados.categoria;
  const paraSalvar: ItemFormulario = {
  nome: dados.nome.trim(),
- categoria: dados.categoria,
+ categoria: categoriaFinal,
  valor: valorNumerico,
  status: dados.status === 'inativo' ? 'inativo' : 'ativo',
  descricao: dados.descricao.trim(),
@@ -123,6 +133,17 @@ export default function FormularioPage() {
  ))}
  </select>
  </label>
+ {dados.categoria === 'Outros' && (
+ <label>
+ Qual é a espécie?
+ <input
+ type="text"
+ placeholder="Ex: Coelho, Tartaruga, Furão..."
+ value={outraCategoria}
+ onChange={(e) => setOutraCategoria(e.target.value)}
+ />
+ </label>
+ )}
  <label>
  {tema.labelValor}
  <input
