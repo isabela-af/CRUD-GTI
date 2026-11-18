@@ -67,6 +67,14 @@ export const temaClinica: Tema = {
       status: 'inativo',
       descricao: 'Recebeu alta após o tratamento.',
     },
+    {
+      nome: 'Coalhada',
+      tutor: 'Mariana Souza',
+      categoria: 'Arara',
+      valor: 120,
+      status: 'ativo',
+      descricao: 'Alergia a ração com peixe.',
+    },
  ],
 };
 
