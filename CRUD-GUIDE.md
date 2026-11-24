@@ -1,4 +1,4 @@
-# Guia Completo do Projeto CRUD — Clínica Veterinária
+# Guia Completo do Projeto CRUD — Clínica
 
 Este documento explica **para que serve cada pasta e arquivo**, **como eles se conectam** e **o que você deve editar** quando quiser mudar qualquer coisa em cada página do sistema.
 
